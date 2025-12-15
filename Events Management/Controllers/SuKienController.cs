@@ -10,46 +10,31 @@ namespace Events_Management.Controllers
     public class SuKienController : ControllerBase
     {
         private readonly ISuKienService _service;
-
-        public SuKienController(ISuKienService service)
-        {
-            _service = service;
-        }
+        public SuKienController(ISuKienService service) => _service = service;
 
         [HttpGet]
-        public ActionResult<IEnumerable<SuKien>> GetAll()
-        {
-            var data = _service.GetAll();
-            return Ok(data);
-        }
+        public IActionResult GetAll() => Ok(_service.GetAll());
 
-        [HttpGet("{id}")]
-        public ActionResult<SuKien> GetById(int id)
+        [HttpGet("{id:int}")]
+        public IActionResult GetById(int id)
         {
             var sk = _service.GetById(id);
-            if (sk == null) return NotFound();
-            return Ok(sk);
+            return sk == null ? NotFound() : Ok(sk);
         }
 
         [HttpPost]
-        public ActionResult Create([FromBody] SuKien model)
+        public IActionResult Create([FromBody] SuKien sk)
         {
-            var ok = _service.Create(model, out string message);
-            if (ok) return Ok(new { success = true, message });
-
-            return BadRequest(new { success = false, message });
+            var newId = _service.Create(sk);
+            return CreatedAtAction(nameof(GetById), new { id = newId }, new { SuKienID = newId });
         }
 
-        [HttpPut("{id}")]
-        public ActionResult Update(int id, [FromBody] SuKien model)
-        {
-            if (id != model.SuKienID)
-                return BadRequest(new { success = false, message = "ID không khớp." });
+        [HttpPut("{id:int}")]
+        public IActionResult Update(int id, [FromBody] SuKien sk)
+            => _service.Update(id, sk) ? NoContent() : NotFound();
 
-            var ok = _service.Update(model, out string message);
-            if (ok) return Ok(new { success = true, message });
-
-            return BadRequest(new { success = false, message });
-        }
+        [HttpDelete("{id:int}")]
+        public IActionResult Delete(int id)
+            => _service.Delete(id) ? NoContent() : NotFound();
     }
 }

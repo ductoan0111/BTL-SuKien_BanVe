@@ -4,9 +4,10 @@ namespace Events_Management.Services.Interfaces
 {
     public interface ISuKienService
     {
-        IEnumerable<SuKien> GetAll();
+        List<SuKien> GetAll();
         SuKien? GetById(int id);
-        bool Create(SuKien sk, out string message);
-        bool Update(SuKien sk, out string message);
+        int Create(SuKien sk);
+        bool Update(int id, SuKien sk);
+        bool Delete(int id);
     }
 }

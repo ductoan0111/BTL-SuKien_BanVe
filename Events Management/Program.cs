@@ -7,8 +7,14 @@ using Events_Management.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 // Gán chuỗi kết nối cho DataHelper (ADO.NET)
 DataHelper.ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// DI
+// DI Repositories
+builder.Services.AddScoped<IDanhMucSuKienRepository, DanhMucSuKienRepository>();
+builder.Services.AddScoped<IDiaDiemRepository, DiaDiemRepository>();
 builder.Services.AddScoped<ISuKienRepository, SuKienRepository>();
+
+// DI Services
+builder.Services.AddScoped<IDanhMucSuKienService, DanhMucSuKienService>();
+builder.Services.AddScoped<IDiaDiemService, DiaDiemService>();
 builder.Services.AddScoped<ISuKienService, SuKienService>();
 // Add services to the container.
 

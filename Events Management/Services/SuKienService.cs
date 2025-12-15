@@ -8,63 +8,36 @@ namespace Events_Management.Services
     {
         private readonly ISuKienRepository _repo;
 
-        public SuKienService(ISuKienRepository repo)
-        {
-            _repo = repo;
-        }
+        public SuKienService(ISuKienRepository repo) => _repo = repo;
 
-        public IEnumerable<SuKien> GetAll() => _repo.GetAll();
+        public List<SuKien> GetAll() => _repo.GetAll();
 
         public SuKien? GetById(int id) => _repo.GetById(id);
 
-        public bool Create(SuKien sk, out string message)
+        public int Create(SuKien sk)
         {
             if (string.IsNullOrWhiteSpace(sk.TenSuKien))
-            {
-                message = "Tên sự kiện không được để trống.";
-                return false;
-            }
+                throw new ArgumentException("Tên sự kiện không được rỗng.");
 
             if (sk.ThoiGianKetThuc <= sk.ThoiGianBatDau)
-            {
-                message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
-                return false;
-            }
+                throw new ArgumentException("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
 
-            var rows = _repo.Insert(sk);
-            if (rows > 0)
-            {
-                message = "Thêm sự kiện thành công.";
-                return true;
-            }
-
-            message = "Thêm sự kiện thất bại.";
-            return false;
+            return _repo.Insert(sk);
         }
 
-        public bool Update(SuKien sk, out string message)
+        public bool Update(int id, SuKien sk)
         {
-            if (sk.SuKienID <= 0)
-            {
-                message = "ID sự kiện không hợp lệ.";
-                return false;
-            }
+            sk.SuKienID = id;
+
+            if (string.IsNullOrWhiteSpace(sk.TenSuKien))
+                throw new ArgumentException("Tên sự kiện không được rỗng.");
 
             if (sk.ThoiGianKetThuc <= sk.ThoiGianBatDau)
-            {
-                message = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu.";
-                return false;
-            }
+                throw new ArgumentException("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
 
-            var rows = _repo.Update(sk);
-            if (rows > 0)
-            {
-                message = "Cập nhật sự kiện thành công.";
-                return true;
-            }
-
-            message = "Cập nhật sự kiện thất bại.";
-            return false;
+            return _repo.Update(sk) > 0;
         }
+
+        public bool Delete(int id) => _repo.SoftDelete(id) > 0;
     }
 }

@@ -9,109 +9,84 @@ namespace Events_Management.Repositories
 {
     public class SuKienRepository : ISuKienRepository
     {
+        private static SuKien Map(DataRow r) => new()
+        {
+            SuKienID = Convert.ToInt32(r["SuKienID"]),
+            DanhMucID = Convert.ToInt32(r["DanhMucID"]),
+            DiaDiemID = Convert.ToInt32(r["DiaDiemID"]),
+            ToChucID = Convert.ToInt32(r["ToChucID"]),
+            TenSuKien = r["TenSuKien"].ToString() ?? "",
+            MoTa = r["MoTa"] == DBNull.Value ? null : r["MoTa"].ToString(),
+            ThoiGianBatDau = Convert.ToDateTime(r["ThoiGianBatDau"]),
+            ThoiGianKetThuc = Convert.ToDateTime(r["ThoiGianKetThuc"]),
+            TrangThai = Convert.ToBoolean(r["TrangThai"])
+        };
+
         public List<SuKien> GetAll()
         {
-            string sql = @"SELECT SuKienID, TenSuKien, MoTa,
-                                  ThoiGianBatDau, ThoiGianKetThuc,
-                                  DiaDiemID, ToChucID, TrangThai
-                           FROM SuKien";
+            var dt = DataHelper.GetDataTable(@"
+                SELECT SuKienID, DanhMucID, DiaDiemID, ToChucID, TenSuKien, MoTa,
+                       ThoiGianBatDau, ThoiGianKetThuc, TrangThai
+                FROM SuKien
+                WHERE TrangThai = 1
+                ORDER BY SuKienID DESC");
 
-            var dt = DataHelper.GetDataTable(sql);
             var list = new List<SuKien>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                list.Add(new SuKien
-                {
-                    SuKienID = Convert.ToInt32(row["SuKienID"]),
-                    TenSuKien = row["TenSuKien"].ToString() ?? "",
-                    MoTa = row["MoTa"] == DBNull.Value ? null : row["MoTa"].ToString(),
-                    ThoiGianBatDau = Convert.ToDateTime(row["ThoiGianBatDau"]),
-                    ThoiGianKetThuc = Convert.ToDateTime(row["ThoiGianKetThuc"]),
-                    DiaDiemID = Convert.ToInt32(row["DiaDiemID"]),
-                    ToChucID = Convert.ToInt32(row["ToChucID"]),
-                    TrangThai = Convert.ToBoolean(row["TrangThai"])
-                });
-            }
-
+            foreach (DataRow r in dt.Rows) list.Add(Map(r));
             return list;
         }
 
         public SuKien? GetById(int id)
         {
-            string sql = @"SELECT SuKienID, TenSuKien, MoTa,
-                                  ThoiGianBatDau, ThoiGianKetThuc,
-                                  DiaDiemID, ToChucID, TrangThai
-                           FROM SuKien
-                           WHERE SuKienID = @id";
+            var dt = DataHelper.GetDataTable(@"
+                SELECT SuKienID, DanhMucID, DiaDiemID, ToChucID, TenSuKien, MoTa,
+                       ThoiGianBatDau, ThoiGianKetThuc, TrangThai
+                FROM SuKien WHERE SuKienID=@id", new SqlParameter("@id", id));
 
-            var dt = DataHelper.GetDataTable(sql, new SqlParameter("@id", id));
-
-            if (dt.Rows.Count == 0) return null;
-
-            var row = dt.Rows[0];
-
-            return new SuKien
-            {
-                SuKienID = Convert.ToInt32(row["SuKienID"]),
-                TenSuKien = row["TenSuKien"].ToString() ?? "",
-                MoTa = row["MoTa"] == DBNull.Value ? null : row["MoTa"].ToString(),
-                ThoiGianBatDau = Convert.ToDateTime(row["ThoiGianBatDau"]),
-                ThoiGianKetThuc = Convert.ToDateTime(row["ThoiGianKetThuc"]),
-                DiaDiemID = Convert.ToInt32(row["DiaDiemID"]),
-                ToChucID = Convert.ToInt32(row["ToChucID"]),
-                TrangThai = Convert.ToBoolean(row["TrangThai"])
-            };
+            return dt.Rows.Count == 0 ? null : Map(dt.Rows[0]);
         }
 
         public int Insert(SuKien sk)
         {
-            string sql = @"INSERT INTO SuKien
-                           (TenSuKien, MoTa, ThoiGianBatDau, ThoiGianKetThuc,
-                            DiaDiemID, ToChucID, TrangThai)
-                           VALUES
-                           (@TenSuKien, @MoTa, @ThoiGianBatDau, @ThoiGianKetThuc,
-                            @DiaDiemID, @ToChucID, @TrangThai)";
-
-            var p = new[]
-            {
-                new SqlParameter("@TenSuKien", sk.TenSuKien),
-                new SqlParameter("@MoTa", (object?)sk.MoTa ?? DBNull.Value),
-                new SqlParameter("@ThoiGianBatDau", sk.ThoiGianBatDau),
-                new SqlParameter("@ThoiGianKetThuc", sk.ThoiGianKetThuc),
+            var obj = DataHelper.ExecuteScalar(@"
+                INSERT INTO SuKien(DanhMucID, DiaDiemID, ToChucID, TenSuKien, MoTa, ThoiGianBatDau, ThoiGianKetThuc, TrangThai)
+                VALUES (@DanhMucID, @DiaDiemID, @ToChucID, @Ten, @MoTa, @BD, @KT, @TrangThai);
+                SELECT CAST(SCOPE_IDENTITY() AS INT);",
+                new SqlParameter("@DanhMucID", sk.DanhMucID),
                 new SqlParameter("@DiaDiemID", sk.DiaDiemID),
                 new SqlParameter("@ToChucID", sk.ToChucID),
-                new SqlParameter("@TrangThai", sk.TrangThai),
-            };
+                new SqlParameter("@Ten", sk.TenSuKien),
+                new SqlParameter("@MoTa", (object?)sk.MoTa ?? DBNull.Value),
+                new SqlParameter("@BD", sk.ThoiGianBatDau),
+                new SqlParameter("@KT", sk.ThoiGianKetThuc),
+                new SqlParameter("@TrangThai", sk.TrangThai));
 
-            return DataHelper.ExecuteNonQuery(sql, p);
+            return Convert.ToInt32(obj);
         }
 
         public int Update(SuKien sk)
         {
-            string sql = @"UPDATE SuKien
-                           SET TenSuKien = @TenSuKien,
-                               MoTa = @MoTa,
-                               ThoiGianBatDau = @ThoiGianBatDau,
-                               ThoiGianKetThuc = @ThoiGianKetThuc,
-                               DiaDiemID = @DiaDiemID,
-                               ToChucID = @ToChucID,
-                               TrangThai = @TrangThai
-                           WHERE SuKienID = @SuKienID";
-
-            var p = new[]
-            {
-                new SqlParameter("@TenSuKien", sk.TenSuKien),
-                new SqlParameter("@MoTa", (object?)sk.MoTa ?? DBNull.Value),
-                new SqlParameter("@ThoiGianBatDau", sk.ThoiGianBatDau),
-                new SqlParameter("@ThoiGianKetThuc", sk.ThoiGianKetThuc),
+            return DataHelper.ExecuteNonQuery(@"
+                UPDATE SuKien
+                SET DanhMucID=@DanhMucID, DiaDiemID=@DiaDiemID, ToChucID=@ToChucID,
+                    TenSuKien=@Ten, MoTa=@MoTa, ThoiGianBatDau=@BD, ThoiGianKetThuc=@KT, TrangThai=@TrangThai
+                WHERE SuKienID=@id",
+                new SqlParameter("@DanhMucID", sk.DanhMucID),
                 new SqlParameter("@DiaDiemID", sk.DiaDiemID),
                 new SqlParameter("@ToChucID", sk.ToChucID),
+                new SqlParameter("@Ten", sk.TenSuKien),
+                new SqlParameter("@MoTa", (object?)sk.MoTa ?? DBNull.Value),
+                new SqlParameter("@BD", sk.ThoiGianBatDau),
+                new SqlParameter("@KT", sk.ThoiGianKetThuc),
                 new SqlParameter("@TrangThai", sk.TrangThai),
-                new SqlParameter("@SuKienID", sk.SuKienID),
-            };
+                new SqlParameter("@id", sk.SuKienID));
+        }
 
-            return DataHelper.ExecuteNonQuery(sql, p);
+        public int SoftDelete(int id)
+        {
+            return DataHelper.ExecuteNonQuery(
+                @"UPDATE SuKien SET TrangThai = 0 WHERE SuKienID = @id",
+                new SqlParameter("@id", id));
         }
     }
 }

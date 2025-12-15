@@ -8,5 +8,6 @@ namespace Events_Management.Repositories.Interfaces
         SuKien? GetById(int id);
         int Insert(SuKien sk);
         int Update(SuKien sk);
+        int SoftDelete(int id);
     }
 }
