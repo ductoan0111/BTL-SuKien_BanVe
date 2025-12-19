@@ -1,17 +1,18 @@
-﻿namespace Events_Management.Models
+﻿namespace Events_Management.Models.DTOs
 {
-    public class LoaiVe
+    public class CreateLoaiVeRequests
     {
-        public int LoaiVeID { get; set; }
-        public int SuKienID { get; set; }
         public string TenLoaiVe { get; set; } = null!;
         public string? MoTa { get; set; }
         public decimal DonGia { get; set; }
         public int SoLuongToiDa { get; set; }
-        public int SoLuongDaBan { get; set; }
         public int? GioiHanMoiKhach { get; set; }
         public DateTime? ThoiGianMoBan { get; set; }
         public DateTime? ThoiGianDongBan { get; set; }
-        public bool TrangThai { get; set; }  // BIT
+        public bool TrangThai { get; set; } = true;
+    }
+    public class UpdateLoaiVeRequest : CreateLoaiVeRequests
+    {
+        // giống Create, có thể bật/tắt TrangThai
     }
 }
