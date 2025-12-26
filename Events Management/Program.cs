@@ -11,11 +11,17 @@ DataHelper.ConnectionString = builder.Configuration.GetConnectionString("Default
 builder.Services.AddScoped<IDanhMucSuKienRepository, DanhMucSuKienRepository>();
 builder.Services.AddScoped<IDiaDiemRepository, DiaDiemRepository>();
 builder.Services.AddScoped<ISuKienRepository, SuKienRepository>();
-
+builder.Services.AddScoped<ILoaiVeRepository, LoaiVeRepository>();
+builder.Services.AddScoped<IDonHangRepository, DonHangRepository>();
+builder.Services.AddScoped<IThanhToanRepository, ThanhToanRepository>();
+builder.Services.AddScoped<IVeRepository, VeRepository>();
 // DI Services
 builder.Services.AddScoped<IDanhMucSuKienService, DanhMucSuKienService>();
 builder.Services.AddScoped<IDiaDiemService, DiaDiemService>();
 builder.Services.AddScoped<ISuKienService, SuKienService>();
+builder.Services.AddScoped<ILoaiVeService, LoaiVeService>();
+builder.Services.AddScoped<IDonHangService, DonHangService>();
+builder.Services.AddScoped<IThanhToanService, ThanhToanService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

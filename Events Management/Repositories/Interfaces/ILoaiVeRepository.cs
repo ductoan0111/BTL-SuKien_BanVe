@@ -1,4 +1,5 @@
 ﻿using Events_Management.Models;
+using Microsoft.Data.SqlClient;
 
 namespace Events_Management.Repositories.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Events_Management.Repositories.Interfaces
         int Insert(LoaiVe v);
         int Update(LoaiVe v);
         int SoftDelete(int id);
+        int IncreaseSold(int loaiVeId, int qty, SqlConnection conn, SqlTransaction tran);
     }
 }

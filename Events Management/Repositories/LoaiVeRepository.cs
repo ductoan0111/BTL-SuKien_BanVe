@@ -108,5 +108,20 @@ namespace Events_Management.Repositories
                 @"UPDATE dbo.LoaiVe SET TrangThai = 0 WHERE LoaiVeID = @id;",
                 new SqlParameter("@id", id));
         }
+        public int IncreaseSold(int loaiVeId, int qty, SqlConnection conn, SqlTransaction tran)
+        {
+            const string sql = @"
+UPDATE dbo.LoaiVe
+SET SoLuongDaBan = SoLuongDaBan + @qty
+WHERE LoaiVeID = @id
+  AND TrangThai = 1
+  AND (SoLuongDaBan + @qty) <= SoLuongToiDa;";
+
+            using var cmd = new SqlCommand(sql, conn, tran);
+            cmd.Parameters.AddWithValue("@id", loaiVeId);
+            cmd.Parameters.AddWithValue("@qty", qty);
+
+            return cmd.ExecuteNonQuery(); // 1 = OK, 0 = hết vé / ngưng bán
+        }
     }
 }
