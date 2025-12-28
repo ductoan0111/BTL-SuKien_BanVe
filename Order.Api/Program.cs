@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
 builder.Services.AddScoped<IDonHangRepository, DonHangRepository>();
 builder.Services.AddScoped<IVeRepository, VeRepository>();
+builder.Services.AddScoped<IChiTietDonHangRepository, ChiTietDonHangRepository>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
