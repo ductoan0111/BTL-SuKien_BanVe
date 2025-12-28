@@ -6,12 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\NewFolder\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Payment.Domain\Payment.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

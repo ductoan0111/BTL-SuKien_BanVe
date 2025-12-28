@@ -1,8 +1,3 @@
-using BuildingBlocks.Shareds.Abstractions;
-using Payment.Application.Contracts.Repositories;
-using Payment.Infrastructure.Data;
-using Payment.Infrastructure.Repositories;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,8 +6,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
-builder.Services.AddScoped<IThanhToanRepository, ThanhToanRepository>();
 
 var app = builder.Build();
 

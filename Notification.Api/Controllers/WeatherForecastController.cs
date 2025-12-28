@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Payment.Api.Controllers
+namespace Notification.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
