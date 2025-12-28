@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Order.Infrastructure
+namespace Order.Infrastructure.Reponsitories
 {
     public class VeRepository : IVeRepository
     {
