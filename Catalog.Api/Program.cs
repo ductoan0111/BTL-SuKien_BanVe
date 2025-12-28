@@ -15,6 +15,7 @@ builder.Services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
 builder.Services.AddScoped<IDiaDiemReponsitory, DiaDiemReponsitory>();
 builder.Services.AddScoped<IDanhMucSuKienRepository, DanhMucSuKienRepository>();
 builder.Services.AddScoped<ISuKienRepository, SuKienRepository>();
+builder.Services.AddScoped<ILoaiVeRepository, LoaiVeRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
