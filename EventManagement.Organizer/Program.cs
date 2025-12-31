@@ -18,6 +18,10 @@ builder.Services.AddScoped<ILoaiVeRepository, LoaiVeRepository>();
 builder.Services.AddScoped<ILoaiVeService, LoaiVeService>();
 builder.Services.AddScoped<ISuKienRepository, SuKienRepository>();
 builder.Services.AddScoped<ISuKienService, SuKienService>();
+builder.Services.AddScoped<ICheckinRepository, CheckinRepository>();
+builder.Services.AddScoped<ICheckinService, CheckinService>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
