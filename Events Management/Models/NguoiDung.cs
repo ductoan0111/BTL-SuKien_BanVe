@@ -11,11 +11,5 @@
         public byte TrangThai { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime? NgayCapNhat { get; set; }
-
-        public virtual VaiTro? VaiTro { get; set; }
-
-        public virtual ICollection<SuKien> SuKiens { get; set; } = new List<SuKien>();
-        public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
-        public virtual ICollection<ThongBao> ThongBaos { get; set; } = new List<ThongBao>();
     }
 }
