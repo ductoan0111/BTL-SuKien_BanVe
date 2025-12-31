@@ -1,0 +1,178 @@
+/* Trang giỏ hàng – dùng chung biến màu trong :root từ detail.css */
+
+.orders-page{
+  padding: 18px 0 40px;
+}
+
+.orders-header{
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 14px 40px #00000040;
+}
+
+.orders-header h1{
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.orders-header p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Trạng thái rỗng */
+.orders-empty{
+  margin-top: 30px;
+  padding: 40px 20px;
+  text-align: center;
+  background: #101214;
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+}
+.orders-empty i{
+  font-size: 42px;
+  margin-bottom: 12px;
+  color: #e86f2b;
+}
+.orders-empty h2{
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: var(--text);
+}
+.orders-empty p{
+  margin: 0 0 14px;
+}
+
+/* Danh sách đơn */
+.orders-list{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card đơn hàng */
+.order-card{
+  background: #0f1112;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: 0 10px 32px #00000055;
+  padding: 16px 18px 14px;
+}
+
+.order-card__top{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 10px;
+}
+
+.order-meta{
+  font-size: 13px;
+  color: var(--muted);
+}
+.order-meta strong{
+  color: var(--text);
+}
+
+.order-card__title{
+  font-weight: 800;
+  font-size: 15px;
+  margin: 0 0 4px;
+}
+
+.order-summary{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14px;
+}
+.order-summary__total{
+  font-weight: 800;
+  color: #ffcf70;
+}
+.order-summary__qty{
+  color: var(--muted);
+}
+
+/* Nút hành động */
+.order-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Bảng items */
+.order-items{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.order-items th,
+.order-items td{
+  padding: 6px 4px;
+  text-align: left;
+}
+.order-items th{
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 600;
+}
+.order-items td{
+  border-bottom: 1px dashed #2b3136;
+}
+
+/* Khách hàng */
+.order-customer{
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.order-customer span{
+  color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 640px){
+  .order-card{
+    padding: 14px 10px;
+  }
+  .order-items{
+    font-size: 13px;
+  }
+  .order-card__top{
+    align-items: flex-start;
+  }
+}
+
+/* Style nhỏ cho print-window (được inject thêm) – chỉ phòng hờ nếu cần */
+/* Áp hiệu ứng chuyển động chung cho mọi ảnh */
+img{
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Khi hover: hơi trong suốt + nhích nhẹ lên trên */
+img:hover{
+  opacity: 0.85;                  /* trong suốt nhẹ */
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Trên mobile, khi bấm vào ảnh / link / nút không hiện màu overlay */
+a,
+button{
+  -webkit-tap-highlight-color: transparent; /* xoá màu xám/xanh khi tap */
+}
